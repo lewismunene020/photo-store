@@ -14,6 +14,11 @@
         android:theme="@style/Theme.PhotoStore"
         tools:targetApi="31">
         <activity
+            android:name=".UserAccountActivity"
+            android:exported="false"
+            android:label="@string/title_activity_user_account"
+            android:theme="@style/Theme.PhotoStore.NoActionBar" />
+        <activity
             android:name=".SplashScreenActivity"
             android:exported="false" />
         <activity

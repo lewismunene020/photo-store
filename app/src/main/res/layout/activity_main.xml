@@ -8,6 +8,8 @@
     tools:context=".MainActivity">
 
 
+
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
         android:layout_width="wrap_content"
@@ -28,6 +30,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="106dp" />
+
+
 
     <EditText
         android:id="@+id/email_address"
@@ -142,17 +146,18 @@
         android:id="@+id/google_sign_in_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/button_background"
+        android:hint="Sign in  with "
         android:minHeight="48dp"
         android:padding="16dp"
-        android:hint="Sign in  with  google"
-        android:background="@drawable/button_background"
-        android:textSize="20sp"
         android:textColorHint="@color/white"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@id/guideline_right"
-        app:layout_constraintTop_toBottomOf="@id/line1"/>
-
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/line1"
+        android:drawableRight="@drawable/ic_google" />
 
     <TextView
         android:layout_width="wrap_content"

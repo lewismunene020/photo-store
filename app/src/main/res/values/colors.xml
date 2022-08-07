@@ -9,13 +9,17 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#00ff00</color>
 
-<!--Home  Page  SignUp  and  Login   colors-->
+<!--Home  Page    colors-->
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="dark_blue">#3023AE</color>
     <color name="purple">#c86dd7</color>
+
+<!--    SignUp  and  Login   colors-->
+    <color name="red">#F02E00</color>
+    <color name="dark_red">#CA0000</color>
 
 <!--    Input   form   color   styles  -->
     <color name="login_form_details">#ccffffff</color>
