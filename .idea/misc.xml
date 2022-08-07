@@ -4,8 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.192" />
+        <entry key="app/src/main/res/drawable/bg_home.xml" value="0.2075" />
+        <entry key="app/src/main/res/drawable/button_backgound.xml" value="0.165" />
+        <entry key="app/src/main/res/drawable/edit_text_bg.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.192" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.16576086956521738" />
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.2075" />
+        <entry key="app/src/main/res/drawable/ic_photostore_welcome.xml" value="0.1475" />
+        <entry key="app/src/main/res/drawable/ic_photostorelogo.xml" value="0.2085" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.20104166666666667" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_show_uploads.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_upload.xml" value="0.20104166666666667" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2115" />
       </map>
     </option>
   </component>

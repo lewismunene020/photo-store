@@ -1,67 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="@drawable/bg_home"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/button_choose_image"
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose  a file"
-        android:backgroundTint="@color/green"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="24dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="106dp" />
 
     <EditText
-        android:id="@+id/edit_text_file_name"
-        android:layout_width="match_parent"
+        android:id="@+id/email_address"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_toEndOf="@+id/button_choose_image"
-        android:layout_toRightOf="@+id/button_choose_image"
-        android:hint="Enter File Name " />
-
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/progress_bar"
-        android:layout_below="@+id/edit_text_file_name"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button_upload"
-        android:layout_marginBottom="16dp" />
-    <Button
-        android:id="@+id/button_upload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="9dp"
-        android:hint="Upload  Files"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/edit_text_bg"
+        android:padding="16dp"
         android:textColorHint="@color/white"
-        android:backgroundTint="@color/green"/>
+        android:hint="Email Address"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/edit_text_bg"
+        android:padding="16dp"
+        android:textColorHint="@color/white"
+        android:hint="Password"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@+id/email_address"
+        android:inputType="textPassword"/>
+
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        android:hint="Login"
+        android:background="@drawable/button_background"
+        android:textSize="20sp"
+        android:textColorHint="@color/white"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintTop_toBottomOf="@id/password"/>
 
     <TextView
-        android:id="@+id/text_view_show_uploads"
+        android:id="@+id/forgot_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="9dp"
+        android:textSize="25dp"
+        android:text="Forgot  Password ??"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintTop_toBottomOf="@id/login_btn" />
+
+    <TextView
+        android:id="@+id/recover_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="10dp"
+        android:text="recover"
+        android:textColor="@color/dark_blue"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/forgot_password"
+        app:layout_constraintTop_toBottomOf="@+id/login_btn" />
+
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="120dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/login_form_details_medium"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintEnd_toStartOf="@+id/or"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintTop_toBottomOf="@id/forgot_password"/>
+
+    <TextView
+        android:id="@+id/or"
+        app:layout_constraintStart_toEndOf="@id/line1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button_upload"
-        android:layout_alignTop="@+id/button_upload"
-        android:layout_toEndOf="@+id/button_upload"
-        android:layout_marginStart="25dp"
-        android:gravity="center"
-        android:text="Show  Uploads"
-        android:textSize="16sp"
-        android:layout_marginLeft="25dp"
-        android:layout_toRightOf="@+id/button_upload" />
+        android:text="or"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/forgot_password" />
 
-</RelativeLayout>
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="120dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/login_form_details_medium"
+        app:layout_constraintStart_toEndOf="@id/or"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintTop_toBottomOf="@id/forgot_password"/>
+
+
+    <Button
+        android:id="@+id/google_sign_in_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        android:hint="Sign in  with  google"
+        android:background="@drawable/button_background"
+        android:textSize="20sp"
+        android:textColorHint="@color/white"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintTop_toBottomOf="@id/line1"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        android:text="Don't have an  account ? Sign up"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/bottom_line"
+        android:layout_marginBottom="30dp"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"/>
+
+
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/login_form_details_medium"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
