@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable/button_backgound.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/button_background.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/edit_text_bg.xml" value="0.165" />
+        <entry key="app/src/main/res/drawable/fragment_button_bg.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable/ic_google.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.192" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.2075" />
@@ -23,7 +24,7 @@
         <entry key="app/src/main/res/layout/activity_upload.xml" value="0.20104166666666667" />
         <entry key="app/src/main/res/layout/activity_user_account.xml" value="0.17300724637681159" />
         <entry key="app/src/main/res/layout/fragment_sign__in_.xml" value="0.20104166666666667" />
-        <entry key="app/src/main/res/layout/fragment_sign__up_.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_sign__up_.xml" value="0.33" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2115" />
       </map>
     </option>

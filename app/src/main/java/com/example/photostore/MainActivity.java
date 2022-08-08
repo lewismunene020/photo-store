@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         timer.schedule(new  TimerTask(){
             @Override
             public void run() {
-                Intent i   =  new Intent(MainActivity.this , SplashScreenActivity.class);
+                Intent i   =  new Intent(MainActivity.this ,UserAccountActivity.class);
                 startActivity(i);
                 finish();
             }
