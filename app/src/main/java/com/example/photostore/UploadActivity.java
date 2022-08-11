@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,6 +44,8 @@ public class UploadActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private StorageTask storageTask;
+    private   String  image_storage_path = "imageuploads/";
+    private   String  link ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,7 @@ public class UploadActivity extends AppCompatActivity {
         mEditTextFilename =  findViewById(R.id.edit_text_file_name);
 
 //        firebase   variable  initialization
-        storageReference = FirebaseStorage.getInstance().getReference("imageuploads");
+        storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference("imageuploadsdata");
 
 
@@ -113,9 +116,12 @@ public class UploadActivity extends AppCompatActivity {
         MimeTypeMap mime  = MimeTypeMap.getSingleton();
         return  mime.getExtensionFromMimeType(cr.getType(uri));
     }
+    private  String   gettingDownloadUrl(String  name){
+        return storageReference.child(name).getDownloadUrl().toString();
+    }
     private   void   uploadFile(){
         if(mImageUri != null){
-            String   image_name  = System.currentTimeMillis() +"."+getFileExtension(mImageUri);
+            String   image_name  = image_storage_path +System.currentTimeMillis() +"."+getFileExtension(mImageUri);
             StorageReference  fileReference  = storageReference.child(image_name);
 
             storageTask =  fileReference.putFile(mImageUri)
@@ -132,13 +138,34 @@ public class UploadActivity extends AppCompatActivity {
 
 
                             Toast.makeText(UploadActivity.this , "Upload successful " , Toast.LENGTH_SHORT).show();
-                            Upload  upload =  new  Upload(mEditTextFilename.getText().toString().trim() ,
-                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
-//                            String  link = (taskSnapshot.getStorage().getMetadata()).toString();
 
-                            String  link   = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
+                            storageReference.child(image_name).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
-                            Toast.makeText(UploadActivity.this ,  link, Toast.LENGTH_SHORT).show();
+                                @Override
+                                public void onSuccess(Uri uri) {
+//                                    if  the   download  url  is     found  lets  upload to   firebase
+                                    link  =  uri.toString();
+//                                    Toast.makeText(UploadActivity.this ,  uri.toString(), Toast.LENGTH_SHORT).show();
+                                    Upload  upload =  new  Upload(mEditTextFilename.getText().toString().trim() ,link);
+                                    insertIntoDB(link  , upload);
+
+
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    link = "null";
+
+                                }
+                            });
+
+
+                            Toast.makeText(UploadActivity.this ,  image_name, Toast.LENGTH_SHORT).show();
+
+
+
+
 
                         }
                     })
@@ -159,6 +186,16 @@ public class UploadActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this , "Please  select  an  image  file  !!!" , Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void insertIntoDB(String link, Upload upload) {
+        String  uploadId = databaseReference.push().getKey();
+        databaseReference.child(uploadId).setValue(upload, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                Toast.makeText(UploadActivity.this, "database  insert  successful", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
