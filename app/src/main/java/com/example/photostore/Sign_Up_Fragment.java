@@ -167,6 +167,12 @@ public class Sign_Up_Fragment extends Fragment {
              public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                 String  value  =  snapshot.getValue(String.class);
                  HashMap value  = (HashMap) snapshot.getValue();
+                 int   hashsize  = value.size() , i=0;
+                 while (i <  3 ){
+                      HashMap currentHash  = (HashMap) value.get(i);
+                      String user_email  = (String) currentHash.get("email");
+                     Toast.makeText(getActivity() , user_email ,Toast.LENGTH_LONG ).show();
+                 }
                  Toast.makeText(getActivity() , value.toString() ,Toast.LENGTH_LONG ).show();
              }
 
