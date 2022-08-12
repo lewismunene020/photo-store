@@ -9,7 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +34,9 @@ public class Sign_Up_Fragment extends Fragment {
     private  Button upload_redirect;
     private  UserUpload userUpload;
     private UserFirebaseAccess  userFirebaseAccess;
-    private String  user_storage_path = "users";
+    private String  users_storage_path = "photo_store_android_users";
+    private DatabaseReference databaseReference;
+    private MyReceiver myReceiver = null;
 
 
 
@@ -75,7 +83,10 @@ public class Sign_Up_Fragment extends Fragment {
         sign_up_btn = (Button) view.findViewById(R.id.sign_up_btn);
         google_sign_in_btn = (Button) view.findViewById(R.id.google_sign_in_btn);
         upload_redirect = (Button) view.findViewById(R.id.upload_image_redirect) ;
+        userFirebaseAccess = new UserFirebaseAccess();
+        myReceiver =  new MyReceiver();
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         upload_redirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,17 +112,66 @@ public class Sign_Up_Fragment extends Fragment {
 
         if(email_is_valid(email)){
             if(validate_password(password , confirm_password)){
-                userUpload =  new UserUpload(email , password);
-                userFirebaseAccess = new UserFirebaseAccess();
-                boolean   my_bool = userFirebaseAccess.insertUserData("users" , userUpload);
-                if(my_bool){
-                    Toast.makeText(getActivity() , "Sign up  successful" ,Toast.LENGTH_LONG ).show();
-                }else{
-                    Toast.makeText(getActivity() , my_bool+"\nSomething went  wrong !!" ,Toast.LENGTH_LONG ).show();
-
+//                lets   check  if   the  email exists
+                if(email_exists(email)){
+                    Toast.makeText(getActivity() ,"email  already   exists   please  try   another  email" ,Toast.LENGTH_LONG).show();
                 }
+                if(internet_is_connected()){
+                    userUpload =  new UserUpload(email , password);
+                    String  uploadId = databaseReference.push().getKey();
+//                checking the internet connection is active
+
+                    databaseReference.child(users_storage_path).child(uploadId).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(getActivity() , "Sign up  successful" ,Toast.LENGTH_LONG ).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity() , e.getMessage() ,Toast.LENGTH_LONG ).show();
+
+                        }
+                    });
+                    /* IF THE  INTERNET  IS  NOT CONNECTED   THEN   DISPLAY  ERROR  VIEW  AND  TOAST FOR  NO INTERNET  */
+                }else{
+                    Toast.makeText(getActivity() , "NO  INTERNET  CONNECTION !!!" ,Toast.LENGTH_LONG ).show();
+                }
+
+
+
+            //    boolean   my_bool = userFirebaseAccess.insertUserData("users" , userUpload);
+//                if(my_bool == true){
+//                    Toast.makeText(getActivity() , "Sign up  successful" ,Toast.LENGTH_LONG ).show();
+//                }else{
+//                    Toast.makeText(getActivity() , my_bool+"\nSomething went  wrong !!" ,Toast.LENGTH_LONG ).show();
+//
+//                }
             }
         }
+    }
+
+    private boolean internet_is_connected() {
+        Intent i;
+        myReceiver.onReceive(getActivity() ,  i = new  Intent());
+        return myReceiver.connected();
+    }
+
+    private boolean email_exists(String email) {
+/*
+        UserUpload upload  = (UserUpload) databaseReference.child(users_storage_path).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+*/
+        return  false;
     }
 
     private boolean email_is_valid(String email) {

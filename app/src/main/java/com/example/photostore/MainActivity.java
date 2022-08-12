@@ -15,7 +15,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash_screen);
-
+//       TODO:
+//        SEARCH   FOR  USER IN  SQLITE  DATABASE...
+         /*IF THE  USER  IS THE   DB  REDIRECT TO HOME SCREEN
+         * ELSE:
+         *      REDIRECT  TO USER ACCOUNT  ACTIVITY   */
         timer  = new Timer();
         timer.schedule(new  TimerTask(){
             @Override
