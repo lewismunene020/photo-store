@@ -14,8 +14,13 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -138,15 +143,13 @@ public class Sign_Up_Fragment extends Fragment {
                     Toast.makeText(getActivity() , "NO  INTERNET  CONNECTION !!!" ,Toast.LENGTH_LONG ).show();
                 }
 
-
-
-            //    boolean   my_bool = userFirebaseAccess.insertUserData("users" , userUpload);
+//                    boolean   my_bool = userFirebaseAccess.insertUserData("users" , userUpload);
 //                if(my_bool == true){
 //                    Toast.makeText(getActivity() , "Sign up  successful" ,Toast.LENGTH_LONG ).show();
 //                }else{
 //                    Toast.makeText(getActivity() , my_bool+"\nSomething went  wrong !!" ,Toast.LENGTH_LONG ).show();
 //
-//                }
+//                }n
             }
         }
     }
@@ -154,23 +157,25 @@ public class Sign_Up_Fragment extends Fragment {
     private boolean internet_is_connected() {
         Intent i;
         myReceiver.onReceive(getActivity() ,  i = new  Intent());
-        return myReceiver.connected();
+        return myReceiver.CONNECTED;
     }
 
     private boolean email_exists(String email) {
-/*
-        UserUpload upload  = (UserUpload) databaseReference.child(users_storage_path).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-            }
+         databaseReference.child(users_storage_path).addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                 String  value  =  snapshot.getValue(String.class);
+                 HashMap value  = (HashMap) snapshot.getValue();
+                 Toast.makeText(getActivity() , value.toString() ,Toast.LENGTH_LONG ).show();
+             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+             @Override
+             public void onCancelled(@NonNull DatabaseError error) {
+                 Toast.makeText(getActivity() , "Data  not   found !!!!" ,Toast.LENGTH_LONG ).show();
+             }
+         });
 
-            }
-        });
-*/
         return  false;
     }
 

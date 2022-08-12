@@ -11,16 +11,18 @@ import com.example.networkmanager.NetworkUtil;
 
 public class MyReceiver extends BroadcastReceiver{
     public   static  boolean CONNECTED  =  false;
+    private   NetworkUtil networkUtil ;
     @Override
     public void onReceive(Context context, @Nullable Intent intent) {
-        String status  = NetworkUtil.getConnectivityStatus(context);
+        networkUtil = new NetworkUtil();
+        String status  = networkUtil.getConnectivityStatus(context);
         if(status == null){
             status = "No internet  connection";
 
 
         }
         Toast.makeText(context , status , Toast.LENGTH_LONG).show();
-        CONNECTED = NetworkUtil.INTERNET_CONNECTED;
+        CONNECTED = networkUtil.INTERNET_CONNECTED;
     }
 
     public   boolean  connected(){

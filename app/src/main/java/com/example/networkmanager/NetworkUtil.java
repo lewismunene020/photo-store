@@ -22,8 +22,8 @@ public class NetworkUtil {
                 status = "Mobile data  is connected successfully";
                 INTERNET_CONNECTED = true;
             }else if(activeNetwork.getType() == ConnectivityManager.TYPE_BLUETOOTH){
-            status = "Bluetooth  is connected successfully";
-        }
+               status = "Bluetooth  is connected successfully";
+           }
             else{
                 INTERNET_CONNECTED = false;
                 status = "No internet  connection is available";
