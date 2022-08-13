@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+kali_linux_ssh_key
+kali_linux_ssh_key.pub
