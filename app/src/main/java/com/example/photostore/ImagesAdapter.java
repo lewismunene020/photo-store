@@ -52,14 +52,15 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
         // loading  using  Picasso  library
         Picasso.get()
                 .load(upload_current.getImage_url())
-                .fit()
-                .centerInside()
+                .placeholder(R.mipmap.ic_launcher) //this  is the placeholder for image placeholder set a BETTER PLACEHOLDER
+//                .fit()
+//                .centerCrop()
                 .into(holder.imageView);
 
     }
 
     private void loadUrlIntoImageView(ImageView imageView, String image_url) {
-//        todo  this    is   for  loading the image  into  the  image  view  set  the   functionalitu   to   be   fully  effective
+//        todo  this    is   for  loading the image  into  the  image  view  set  the   functionality   to   be   fully  effective
     }
 
     @Override

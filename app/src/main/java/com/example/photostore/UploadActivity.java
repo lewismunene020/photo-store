@@ -44,8 +44,9 @@ public class UploadActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private StorageTask storageTask;
-    private   String  image_storage_path = "imageuploads/";
+    private   String  image_storage_path = "image_uploads/";
     private   String  link ="";
+    private  String  images_database_storage = "image_uploads_data";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class UploadActivity extends AppCompatActivity {
 
 //        firebase   variable  initialization
         storageReference = FirebaseStorage.getInstance().getReference();
-        databaseReference = FirebaseDatabase.getInstance().getReference("imageuploadsdata");
+        databaseReference = FirebaseDatabase.getInstance().getReference(images_database_storage);
 
 
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {

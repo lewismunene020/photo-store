@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -123,7 +122,7 @@ public class Sign_Up_Fragment extends Fragment {
                     userUpload =  new UserUpload(email , password ,uploadId );
 //                checking the internet connection is active
 
-                    databaseReference.child(users_storage_path).child(email).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    databaseReference.child(users_storage_path).child(uploadId).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(getActivity() , "Sign up  successful" ,Toast.LENGTH_LONG ).show();
@@ -159,21 +158,21 @@ public class Sign_Up_Fragment extends Fragment {
 
     private boolean email_exists(String email) {
 
-         databaseReference.child(users_storage_path).child(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-             @Override
-             public void onSuccess(DataSnapshot dataSnapshot) {
-                 String data = dataSnapshot.getKey();
-                 Toast.makeText(getActivity() ,data , Toast.LENGTH_LONG).show();
-                 EMAIL_EXISTS = true;
-             }
-         }).addOnFailureListener(new OnFailureListener() {
-             @Override
-             public void onFailure(@NonNull Exception e) {
-                 EMAIL_EXISTS = false;
-             }
-         });
+//         databaseReference.child(users_storage_path).child(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+//             @Override
+//             public void onSuccess(DataSnapshot dataSnapshot) {
+//                 String data = dataSnapshot.getKey();
+//                 Toast.makeText(getActivity() ,data , Toast.LENGTH_LONG).show();
+//                 EMAIL_EXISTS = true;
+//             }
+//         }).addOnFailureListener(new OnFailureListener() {
+//             @Override
+//             public void onFailure(@NonNull Exception e) {
+//                 EMAIL_EXISTS = false;
+//             }
+//         });
 
-        return  EMAIL_EXISTS;
+        return  EMAIL_EXISTS = false;
     }
 
     private boolean email_is_valid(String email) {
