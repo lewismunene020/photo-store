@@ -15,12 +15,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +38,7 @@ public class Sign_Up_Fragment extends Fragment {
     private String  users_storage_path = "photo_store_android_users";
     private DatabaseReference databaseReference;
     private MyReceiver myReceiver = null;
+    public  static   boolean  EMAIL_EXISTS = false;
 
 
 
@@ -122,11 +119,11 @@ public class Sign_Up_Fragment extends Fragment {
                     Toast.makeText(getActivity() ,"email  already   exists   please  try   another  email" ,Toast.LENGTH_LONG).show();
                 }
                 if(internet_is_connected()){
-                    userUpload =  new UserUpload(email , password);
                     String  uploadId = databaseReference.push().getKey();
+                    userUpload =  new UserUpload(email , password ,uploadId );
 //                checking the internet connection is active
 
-                    databaseReference.child(users_storage_path).child(uploadId).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    databaseReference.child(users_storage_path).child(email).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(getActivity() , "Sign up  successful" ,Toast.LENGTH_LONG ).show();
@@ -162,27 +159,21 @@ public class Sign_Up_Fragment extends Fragment {
 
     private boolean email_exists(String email) {
 
-         databaseReference.child(users_storage_path).addValueEventListener(new ValueEventListener() {
+         databaseReference.child(users_storage_path).child(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
              @Override
-             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                 String  value  =  snapshot.getValue(String.class);
-                 HashMap value  = (HashMap) snapshot.getValue();
-                 int   hashsize  = value.size() , i=0;
-                 while (i <  3 ){
-                      HashMap currentHash  = (HashMap) value.get(i);
-                      String user_email  = (String) currentHash.get("email");
-                     Toast.makeText(getActivity() , user_email ,Toast.LENGTH_LONG ).show();
-                 }
-                 Toast.makeText(getActivity() , value.toString() ,Toast.LENGTH_LONG ).show();
+             public void onSuccess(DataSnapshot dataSnapshot) {
+                 String data = dataSnapshot.getKey();
+                 Toast.makeText(getActivity() ,data , Toast.LENGTH_LONG).show();
+                 EMAIL_EXISTS = true;
              }
-
+         }).addOnFailureListener(new OnFailureListener() {
              @Override
-             public void onCancelled(@NonNull DatabaseError error) {
-                 Toast.makeText(getActivity() , "Data  not   found !!!!" ,Toast.LENGTH_LONG ).show();
+             public void onFailure(@NonNull Exception e) {
+                 EMAIL_EXISTS = false;
              }
          });
 
-        return  false;
+        return  EMAIL_EXISTS;
     }
 
     private boolean email_is_valid(String email) {

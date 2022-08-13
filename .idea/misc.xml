@@ -18,6 +18,7 @@
         <entry key="app/src/main/res/drawable/ic_user_account_button.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/tab_indicator.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.20104166666666667" />
+        <entry key="app/src/main/res/layout/activity_images.xml" value="0.10914855072463768" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_show_uploads.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.18" />
@@ -25,6 +26,7 @@
         <entry key="app/src/main/res/layout/activity_user_account.xml" value="0.24538745387453875" />
         <entry key="app/src/main/res/layout/fragment_sign__in_.xml" value="0.20104166666666667" />
         <entry key="app/src/main/res/layout/fragment_sign__up_.xml" value="0.21555915721231766" />
+        <entry key="app/src/main/res/layout/image_item.xml" value="0.2" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2115" />
       </map>
     </option>

@@ -18,11 +18,13 @@ public class MyReceiver extends BroadcastReceiver{
         String status  = networkUtil.getConnectivityStatus(context);
         if(status == null){
             status = "No internet  connection";
+            CONNECTED =false;
 
-
+        }else{
+            CONNECTED = true;
         }
         Toast.makeText(context , status , Toast.LENGTH_LONG).show();
-        CONNECTED = networkUtil.INTERNET_CONNECTED;
+//        CONNECTED = networkUtil.INTERNET_CONNECTED;
     }
 
     public   boolean  connected(){

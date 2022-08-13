@@ -200,7 +200,7 @@ public class UploadActivity extends AppCompatActivity {
 
 
     public   void showUploadsActivity(View v){
-        Intent   i   =    new  Intent(this , ShowUploads.class);
+        Intent   i   =    new  Intent(this , ImagesActivity.class);
         startActivity(i);
 
     }
