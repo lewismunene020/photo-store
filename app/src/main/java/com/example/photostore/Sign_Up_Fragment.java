@@ -14,8 +14,14 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +44,7 @@ public class Sign_Up_Fragment extends Fragment {
     private DatabaseReference databaseReference;
     private MyReceiver myReceiver = null;
     public  static   boolean  EMAIL_EXISTS = false;
+    private List<UserUpload> storedUserUpload;
 
 
 
@@ -78,14 +85,17 @@ public class Sign_Up_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View  view  = inflater.inflate(R.layout.fragment_sign__up_, container, false);
-        email_edit_text = (EditText) view.findViewById(R.id.email_edit_text);
-        password_edit_text = (EditText) view.findViewById(R.id.password_edit_text);
-        confirm_password_edit_text = (EditText) view.findViewById(R.id.confirm_password_edit_text);
-        sign_up_btn = (Button) view.findViewById(R.id.sign_up_btn);
-        google_sign_in_btn = (Button) view.findViewById(R.id.google_sign_in_btn);
-        upload_redirect = (Button) view.findViewById(R.id.upload_image_redirect) ;
+        email_edit_text = view.findViewById(R.id.email_edit_text);
+        password_edit_text = view.findViewById(R.id.password_edit_text);
+        confirm_password_edit_text = view.findViewById(R.id.confirm_password_edit_text);
+        sign_up_btn = view.findViewById(R.id.sign_up_btn);
+        google_sign_in_btn = view.findViewById(R.id.google_sign_in_btn);
+        upload_redirect = view.findViewById(R.id.upload_image_redirect);
         userFirebaseAccess = new UserFirebaseAccess();
         myReceiver =  new MyReceiver();
+
+//        initializing  stored  users
+        storedUserUpload  = new ArrayList<>();
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         upload_redirect.setOnClickListener(new View.OnClickListener() {
@@ -107,9 +117,9 @@ public class Sign_Up_Fragment extends Fragment {
     }
 
     private void signUpUser() {
-        String  email  =  email_edit_text.getText().toString();
-        String  password = password_edit_text.getText().toString();
-        String  confirm_password =   confirm_password_edit_text.getText().toString();
+        String  email  =  email_edit_text.getText().toString().trim();
+        String  password = password_edit_text.getText().toString().trim();
+        String  confirm_password =   confirm_password_edit_text.getText().toString().trim();
 
         if(email_is_valid(email)){
             if(validate_password(password , confirm_password)){
@@ -117,7 +127,7 @@ public class Sign_Up_Fragment extends Fragment {
                 if(email_exists(email)){
                     Toast.makeText(getActivity() ,"email  already   exists   please  try   another  email" ,Toast.LENGTH_LONG).show();
                 }
-                if(internet_is_connected()){
+                else if(internet_is_connected()){
                     String  uploadId = databaseReference.push().getKey();
                     userUpload =  new UserUpload(email , password ,uploadId );
 //                checking the internet connection is active
@@ -139,13 +149,6 @@ public class Sign_Up_Fragment extends Fragment {
                     Toast.makeText(getActivity() , "NO  INTERNET  CONNECTION !!!" ,Toast.LENGTH_LONG ).show();
                 }
 
-//                    boolean   my_bool = userFirebaseAccess.insertUserData("users" , userUpload);
-//                if(my_bool == true){
-//                    Toast.makeText(getActivity() , "Sign up  successful" ,Toast.LENGTH_LONG ).show();
-//                }else{
-//                    Toast.makeText(getActivity() , my_bool+"\nSomething went  wrong !!" ,Toast.LENGTH_LONG ).show();
-//
-//                }n
             }
         }
     }
@@ -157,22 +160,33 @@ public class Sign_Up_Fragment extends Fragment {
     }
 
     private boolean email_exists(String email) {
+        boolean user_exists = false;
+        DatabaseReference db  = FirebaseDatabase.getInstance().getReference(users_storage_path);
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot userSnapshot  : snapshot.getChildren()){
+                    UserUpload currentUserUpload = userSnapshot.getValue(UserUpload.class); // getting the  user  details  in the current  snapshot
+                    storedUserUpload.add(currentUserUpload);
+                }
 
-//         databaseReference.child(users_storage_path).child(email).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-//             @Override
-//             public void onSuccess(DataSnapshot dataSnapshot) {
-//                 String data = dataSnapshot.getKey();
-//                 Toast.makeText(getActivity() ,data , Toast.LENGTH_LONG).show();
-//                 EMAIL_EXISTS = true;
-//             }
-//         }).addOnFailureListener(new OnFailureListener() {
-//             @Override
-//             public void onFailure(@NonNull Exception e) {
-//                 EMAIL_EXISTS = false;
-//             }
-//         });
+            }
 
-        return  EMAIL_EXISTS = false;
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                storedUserUpload = null;
+            }
+        });
+
+        //LETS ITERATE THROUGH THE USERS AND FIND A USER WITH THE SUBMITTED EMAIL
+        for(UserUpload upload : storedUserUpload){
+            if( upload.getEmail().equals(email)){
+//                Toast.makeText(getActivity() , upload.getEmail() , Toast.LENGTH_LONG).show();
+                user_exists =  true;
+                break;
+            }
+        }
+            return user_exists;
     }
 
     private boolean email_is_valid(String email) {

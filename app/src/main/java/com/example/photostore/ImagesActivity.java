@@ -36,7 +36,7 @@ public class ImagesActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.show_images_recycler_view);
         progressCircle = findViewById(R.id.images_activity_progress_bar);
-        recyclerView.setHasFixedSize(true);
+//        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         uploads =  new ArrayList<>();
