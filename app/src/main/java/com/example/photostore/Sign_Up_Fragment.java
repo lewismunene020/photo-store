@@ -45,6 +45,8 @@ public class Sign_Up_Fragment extends Fragment {
     private MyReceiver myReceiver = null;
     public  static   boolean  EMAIL_EXISTS = false;
     private List<UserUpload> storedUserUpload;
+    private String user_exists;
+    private   List<String> users_found = new ArrayList<>();
 
 
 
@@ -124,30 +126,30 @@ public class Sign_Up_Fragment extends Fragment {
         if(email_is_valid(email)){
             if(validate_password(password , confirm_password)){
 //                lets   check  if   the  email exists
-                if(email_exists(email)){
+                if(email_exists(email) .equals("true")){
                     Toast.makeText(getActivity() ,"email  already   exists   please  try   another  email" ,Toast.LENGTH_LONG).show();
-                }
-                else if(internet_is_connected()){
-                    String  uploadId = databaseReference.push().getKey();
-                    userUpload =  new UserUpload(email , password ,uploadId );
+                }else {
+                    if(internet_is_connected()){
+                        String  uploadId = databaseReference.push().getKey();
+                        userUpload =  new UserUpload(email , password ,uploadId );
 //                checking the internet connection is active
-
-                    databaseReference.child(users_storage_path).child(uploadId).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(getActivity() , "Sign up  successful" ,Toast.LENGTH_LONG ).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity() , e.getMessage() ,Toast.LENGTH_LONG ).show();
-
-                        }
-                    });
-                    /* IF THE  INTERNET  IS  NOT CONNECTED   THEN   DISPLAY  ERROR  VIEW  AND  TOAST FOR  NO INTERNET  */
-                }else{
-                    Toast.makeText(getActivity() , "NO  INTERNET  CONNECTION !!!" ,Toast.LENGTH_LONG ).show();
+                        databaseReference.child(users_storage_path).child(uploadId).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(getActivity() , "Sign up  successful" ,Toast.LENGTH_LONG ).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getActivity() , e.getMessage() ,Toast.LENGTH_LONG ).show();
+                            }
+                        });
+                        /* IF THE  INTERNET  IS  NOT CONNECTED   THEN   DISPLAY  ERROR  VIEW  AND  TOAST FOR  NO INTERNET  */
+                    }else{
+//                        Toast.makeText(getActivity() , "NO  INTERNET  CONNECTION !!!" ,Toast.LENGTH_LONG ).show();
+                    }
                 }
+
 
             }
         }
@@ -159,7 +161,7 @@ public class Sign_Up_Fragment extends Fragment {
         return myReceiver.CONNECTED;
     }
 
-    private boolean email_exists(String email) {
+    private String email_exists(String email) {
 
         Task<DataSnapshot> dataSnapshotTask  = FirebaseDatabase.getInstance().getReference(users_storage_path).get();
         dataSnapshotTask.onSuccessTask(new SuccessContinuation<DataSnapshot, Object>() {
@@ -171,43 +173,37 @@ public class Sign_Up_Fragment extends Fragment {
                     UserUpload currentUserUpload = userSnapshot.getValue(UserUpload.class); // getting the  user  details  in the current  snapshot
 //                    Toast.makeText(getActivity() , currentUserUpload.getUnique_id() , Toast.LENGTH_LONG).show();
                     if(currentUserUpload.getEmail().equals(email)){
-                        storedUserUpload.add(currentUserUpload);
-                        Toast.makeText(getActivity() , "user found" , Toast.LENGTH_LONG).show();
+                        users_found.add(currentUserUpload.getEmail());
+                        user_exists = "true";
+//                        storedUserUpload.add(currentUserUpload);
+//                        Toast.makeText(getActivity() , "user found" , Toast.LENGTH_LONG).show();
                         break;
-                    }else{
-                        Toast.makeText(getActivity() , "no user was found" , Toast.LENGTH_LONG).show();
                     }
 
                 }
-                return null;
+                if(users_found.contains(email)){
+                    user_exists = "true";
+                }else{
+                    user_exists ="false";
+                }
+                Toast.makeText(getActivity(), user_exists,Toast.LENGTH_LONG ).show();
+              return  null;
             }
+
+
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
 //                Toast.makeText(getActivity() , e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
-
-
-        boolean user_exists = false;
-        //LETS ITERATE THROUGH THE USERS AND FIND A USER WITH THE SUBMITTED EMAIL
-        for(UserUpload upload : storedUserUpload){
-            if( upload.getEmail().equals(email)) {
-                Toast.makeText(getActivity() , upload.getEmail() , Toast.LENGTH_LONG).show();
-                user_exists = true;
-                break;
-            }else{
-                Toast.makeText(getActivity() , "user  does not exist" , Toast.LENGTH_LONG).show();
-            }
-        }
-            return user_exists;
+    return  user_exists;
     }
 
     private boolean email_is_valid(String email) {
         boolean correct  =  false;
-        if(email != ""){
-            if(validator.validate_email(email.trim())){
+        if(!email .equals("")){
+            if(validator.validate_email(email)){
                 correct =  true;
 //                Toast.makeText(getActivity() , "Correct  !!!!" ,Toast.LENGTH_LONG ).show();
             }else{
