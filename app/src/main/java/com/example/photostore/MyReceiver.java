@@ -20,10 +20,14 @@ public class MyReceiver extends BroadcastReceiver{
             status = "No internet  connection";
             CONNECTED =false;
 
-        }else{
+        }else if(status.equals("No internet")){
+            CONNECTED = false;
+            status = "No internet  connection";
+            Toast.makeText(context , status , Toast.LENGTH_LONG).show();
+        }
+        else{
             CONNECTED = true;
         }
-        Toast.makeText(context , status , Toast.LENGTH_LONG).show();
 //        CONNECTED = networkUtil.INTERNET_CONNECTED;
     }
 

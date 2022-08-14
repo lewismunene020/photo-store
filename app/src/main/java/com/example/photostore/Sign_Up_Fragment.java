@@ -110,7 +110,7 @@ public class Sign_Up_Fragment extends Fragment {
         sign_up_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signUpUser();
+                signUpNewUser();
             }
         });
 
@@ -118,7 +118,7 @@ public class Sign_Up_Fragment extends Fragment {
         return view;
     }
 
-    private void signUpUser() {
+    private void insertUserToDB() {
         String  email  =  email_edit_text.getText().toString().trim();
         String  password = password_edit_text.getText().toString().trim();
         String  confirm_password =   confirm_password_edit_text.getText().toString().trim();
@@ -126,7 +126,6 @@ public class Sign_Up_Fragment extends Fragment {
         if(email_is_valid(email)){
             if(validate_password(password , confirm_password)){
                     if(internet_is_connected()) {
-                        if (email_exists(email) == "true" ) {
                                 String uploadId = databaseReference.push().getKey();
                                 userUpload = new UserUpload(email, password, uploadId);
         //                    checking the internet connection is active
@@ -142,7 +141,7 @@ public class Sign_Up_Fragment extends Fragment {
                                     }
                                 });
                                 /* IF THE  INTERNET  IS  NOT CONNECTED   THEN   DISPLAY  ERROR  VIEW  AND  TOAST FOR  NO INTERNET  */
-                      }
+
 
                     }else{
 //                        Toast.makeText(getActivity() , "NO  INTERNET  CONNECTION !!!" ,Toast.LENGTH_LONG ).show();
@@ -157,45 +156,57 @@ public class Sign_Up_Fragment extends Fragment {
         return myReceiver.CONNECTED;
     }
 
-    private String email_exists(final String email) {
+    private void signUpNewUser() {
+        final String  email  =  email_edit_text.getText().toString().trim();
+        final  String  password = password_edit_text.getText().toString().trim();
+        final  String  confirm_password =   confirm_password_edit_text.getText().toString().trim();
 
-        Task<DataSnapshot> dataSnapshotTask  = FirebaseDatabase.getInstance().getReference(users_storage_path).get();
-        dataSnapshotTask.onSuccessTask(new SuccessContinuation<DataSnapshot, Object>() {
-            @NonNull
-            @Override
-            public Task<Object> then(DataSnapshot dataSnapshot) throws Exception {
-                for(DataSnapshot userSnapshot  : dataSnapshot.getChildren()){
-                    UserUpload currentUserUpload = userSnapshot.getValue(UserUpload.class); // getting the  user  details  in the current  snapshot
-                    if(currentUserUpload.getEmail().equals(email)){
-                        users_found.add(currentUserUpload.getEmail());
-                        user_exists = "true";
-                        Toast.makeText(getActivity(), "user exists",Toast.LENGTH_LONG ).show();
+        if(internet_is_connected()) {
+            Task<DataSnapshot> dataSnapshotTask  = FirebaseDatabase.getInstance().getReference(users_storage_path).get();
+            dataSnapshotTask.onSuccessTask(new SuccessContinuation<DataSnapshot, Object>() {
+                @NonNull
+                @Override
+                public Task<Object> then(DataSnapshot dataSnapshot) throws Exception {
+                    for(DataSnapshot userSnapshot  : dataSnapshot.getChildren()){
+                        UserUpload currentUserUpload = userSnapshot.getValue(UserUpload.class); // getting the  user  details  in the current  snapshot
+                        if(currentUserUpload.getEmail().equals(email)){
+                            users_found.add(currentUserUpload.getEmail());
+                            user_exists = "true";
+//                            Toast.makeText(getActivity(), "user exists",Toast.LENGTH_LONG ).show();
 
 //                        storedUserUpload.add(currentUserUpload);
 //                        Toast.makeText(getActivity() , "user found" , Toast.LENGTH_LONG).show();
-                        break;
+                            break;
+                        }else{
+
+                        }
+
                     }
+                   if(users_found.contains(email)){
+                        Toast.makeText(getActivity(), "user exists in arraylist ",Toast.LENGTH_LONG ).show();
+                        user_exists = "true";
 
+                        // LETS INSERT TO THE DATABASE NOW
+
+                    }else{
+                        Toast.makeText(getActivity(), "user exists not in arraylist",Toast.LENGTH_LONG ).show();
+                        insertUserToDB();
+                        user_exists ="false";
+                    }
+                    return  null;
                 }
-                if(users_found.contains(email)){
-                    Toast.makeText(getActivity(), "user exists in arraylist ",Toast.LENGTH_LONG ).show();
-                    user_exists = "true";
-                }else{
-                    Toast.makeText(getActivity(), "user exists not in arraylist",Toast.LENGTH_LONG ).show();
-
-                    user_exists ="false";
-                }
-              return  null;
-            }
 
 
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
 //                Toast.makeText(getActivity() , e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    return  user_exists;
+                }
+            });
+        }else{
+            // TODO :IF NO INTERNET   LET'S REDIRECT TO  THE NETWORK ERROR  PAGE
+        }
+
     }
 
     private boolean email_is_valid(String email) {
