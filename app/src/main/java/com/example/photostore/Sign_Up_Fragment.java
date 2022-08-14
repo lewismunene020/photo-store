@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,9 +45,11 @@ public class Sign_Up_Fragment extends Fragment {
     public static boolean EMAIL_EXISTS = false;
     private List<UserUpload> storedUserUpload;
     private static String user_exists;
-    private LinearLayout progress_circle_layout;
-    private static List<String> users_found = new ArrayList<>();
 
+    private LinearLayout progress_circle_layout;
+    private ConstraintLayout signupConstraintLayout;
+
+    private static List<String> users_found = new ArrayList<>();
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -89,7 +92,9 @@ public class Sign_Up_Fragment extends Fragment {
         email_edit_text = view.findViewById(R.id.email_edit_text);
         password_edit_text = view.findViewById(R.id.password_edit_text);
         confirm_password_edit_text = view.findViewById(R.id.confirm_password_edit_text);
+
         progress_circle_layout = view.findViewById(R.id.signup_progress_circle_layout);
+        signupConstraintLayout = view.findViewById(R.id.signup_constraint_layout);
 
         Button sign_up_btn = view.findViewById(R.id.sign_up_btn);
         Button google_sign_in_btn = view.findViewById(R.id.google_sign_in_btn);
@@ -143,7 +148,7 @@ public class Sign_Up_Fragment extends Fragment {
                                 Toast.makeText(getActivity(), "Sign up  successful", Toast.LENGTH_LONG).show();
                                 //TODO :HIDING THE  LOADER
 
-                                progress_circle_layout.setVisibility(View.INVISIBLE);
+                                progress_circle_layout.setVisibility(View.GONE);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -192,7 +197,7 @@ public class Sign_Up_Fragment extends Fragment {
                         //TODO :SHOW AN ALERT TO SHOW USER EXISTS
                         Toast.makeText(getActivity(), "user exists in arraylist ", Toast.LENGTH_LONG).show();
                         user_exists = "true";
-                        progress_circle_layout.setVisibility(View.INVISIBLE);
+                        progress_circle_layout.setVisibility(View.GONE);
                         // LETS INSERT TO THE DATABASE NOW
 
                     } else {
