@@ -45,8 +45,8 @@ public class Sign_Up_Fragment extends Fragment {
     private MyReceiver myReceiver = null;
     public  static   boolean  EMAIL_EXISTS = false;
     private List<UserUpload> storedUserUpload;
-    private String user_exists;
-    private   List<String> users_found = new ArrayList<>();
+    private static String user_exists;
+    private  static  List<String> users_found = new ArrayList<>();
 
 
 
@@ -125,32 +125,28 @@ public class Sign_Up_Fragment extends Fragment {
 
         if(email_is_valid(email)){
             if(validate_password(password , confirm_password)){
-//                lets   check  if   the  email exists
-                if(email_exists(email) .equals("true")){
-                    Toast.makeText(getActivity() ,"email  already   exists   please  try   another  email" ,Toast.LENGTH_LONG).show();
-                }else {
-                    if(internet_is_connected()){
-                        String  uploadId = databaseReference.push().getKey();
-                        userUpload =  new UserUpload(email , password ,uploadId );
-//                checking the internet connection is active
-                        databaseReference.child(users_storage_path).child(uploadId).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(getActivity() , "Sign up  successful" ,Toast.LENGTH_LONG ).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getActivity() , e.getMessage() ,Toast.LENGTH_LONG ).show();
-                            }
-                        });
-                        /* IF THE  INTERNET  IS  NOT CONNECTED   THEN   DISPLAY  ERROR  VIEW  AND  TOAST FOR  NO INTERNET  */
+                    if(internet_is_connected()) {
+                        if (email_exists(email) == "true" ) {
+                                String uploadId = databaseReference.push().getKey();
+                                userUpload = new UserUpload(email, password, uploadId);
+        //                    checking the internet connection is active
+                                databaseReference.child(users_storage_path).child(uploadId).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(getActivity(), "Sign up  successful", Toast.LENGTH_LONG).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                                /* IF THE  INTERNET  IS  NOT CONNECTED   THEN   DISPLAY  ERROR  VIEW  AND  TOAST FOR  NO INTERNET  */
+                      }
+
                     }else{
 //                        Toast.makeText(getActivity() , "NO  INTERNET  CONNECTION !!!" ,Toast.LENGTH_LONG ).show();
                     }
-                }
-
-
             }
         }
     }
@@ -161,32 +157,35 @@ public class Sign_Up_Fragment extends Fragment {
         return myReceiver.CONNECTED;
     }
 
-    private String email_exists(String email) {
+    private String email_exists(final String email) {
 
         Task<DataSnapshot> dataSnapshotTask  = FirebaseDatabase.getInstance().getReference(users_storage_path).get();
         dataSnapshotTask.onSuccessTask(new SuccessContinuation<DataSnapshot, Object>() {
             @NonNull
             @Override
             public Task<Object> then(DataSnapshot dataSnapshot) throws Exception {
-                Toast.makeText(getActivity() , "Task snapshot  fetched successfully" , Toast.LENGTH_SHORT).show();
                 for(DataSnapshot userSnapshot  : dataSnapshot.getChildren()){
                     UserUpload currentUserUpload = userSnapshot.getValue(UserUpload.class); // getting the  user  details  in the current  snapshot
-//                    Toast.makeText(getActivity() , currentUserUpload.getUnique_id() , Toast.LENGTH_LONG).show();
                     if(currentUserUpload.getEmail().equals(email)){
                         users_found.add(currentUserUpload.getEmail());
                         user_exists = "true";
+                        Toast.makeText(getActivity(), "user exists",Toast.LENGTH_LONG ).show();
+
 //                        storedUserUpload.add(currentUserUpload);
 //                        Toast.makeText(getActivity() , "user found" , Toast.LENGTH_LONG).show();
                         break;
+                    }else{
+                        Toast.makeText(getActivity(), "user does not  exist",Toast.LENGTH_LONG ).show();
+
                     }
 
                 }
                 if(users_found.contains(email)){
+                    Toast.makeText(getActivity(), "user exists",Toast.LENGTH_LONG ).show();
                     user_exists = "true";
                 }else{
                     user_exists ="false";
                 }
-                Toast.makeText(getActivity(), user_exists,Toast.LENGTH_LONG ).show();
               return  null;
             }
 
