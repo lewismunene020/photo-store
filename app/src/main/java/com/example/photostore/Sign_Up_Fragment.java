@@ -174,16 +174,15 @@ public class Sign_Up_Fragment extends Fragment {
 //                        storedUserUpload.add(currentUserUpload);
 //                        Toast.makeText(getActivity() , "user found" , Toast.LENGTH_LONG).show();
                         break;
-                    }else{
-                        Toast.makeText(getActivity(), "user does not  exist",Toast.LENGTH_LONG ).show();
-
                     }
 
                 }
                 if(users_found.contains(email)){
-                    Toast.makeText(getActivity(), "user exists",Toast.LENGTH_LONG ).show();
+                    Toast.makeText(getActivity(), "user exists in arraylist ",Toast.LENGTH_LONG ).show();
                     user_exists = "true";
                 }else{
+                    Toast.makeText(getActivity(), "user exists not in arraylist",Toast.LENGTH_LONG ).show();
+
                     user_exists ="false";
                 }
               return  null;
