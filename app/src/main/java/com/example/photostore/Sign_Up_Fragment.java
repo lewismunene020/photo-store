@@ -14,11 +14,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.SuccessContinuation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,30 +160,45 @@ public class Sign_Up_Fragment extends Fragment {
     }
 
     private boolean email_exists(String email) {
-        boolean user_exists = false;
-        DatabaseReference db  = FirebaseDatabase.getInstance().getReference(users_storage_path);
-        db.addValueEventListener(new ValueEventListener() {
+
+        Task<DataSnapshot> dataSnapshotTask  = FirebaseDatabase.getInstance().getReference(users_storage_path).get();
+        dataSnapshotTask.onSuccessTask(new SuccessContinuation<DataSnapshot, Object>() {
+            @NonNull
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot userSnapshot  : snapshot.getChildren()){
+            public Task<Object> then(DataSnapshot dataSnapshot) throws Exception {
+                Toast.makeText(getActivity() , "Task snapshot  fetched successfully" , Toast.LENGTH_SHORT).show();
+                for(DataSnapshot userSnapshot  : dataSnapshot.getChildren()){
                     UserUpload currentUserUpload = userSnapshot.getValue(UserUpload.class); // getting the  user  details  in the current  snapshot
-                    storedUserUpload.add(currentUserUpload);
+//                    Toast.makeText(getActivity() , currentUserUpload.getUnique_id() , Toast.LENGTH_LONG).show();
+                    if(currentUserUpload.getEmail().equals(email)){
+                        storedUserUpload.add(currentUserUpload);
+                        Toast.makeText(getActivity() , "user found" , Toast.LENGTH_LONG).show();
+                        break;
+                    }else{
+                        Toast.makeText(getActivity() , "no user was found" , Toast.LENGTH_LONG).show();
+                    }
+
                 }
-
+                return null;
             }
-
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                storedUserUpload = null;
+            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(getActivity() , e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
+
+
+        boolean user_exists = false;
         //LETS ITERATE THROUGH THE USERS AND FIND A USER WITH THE SUBMITTED EMAIL
         for(UserUpload upload : storedUserUpload){
-            if( upload.getEmail().equals(email)){
-//                Toast.makeText(getActivity() , upload.getEmail() , Toast.LENGTH_LONG).show();
-                user_exists =  true;
+            if( upload.getEmail().equals(email)) {
+                Toast.makeText(getActivity() , upload.getEmail() , Toast.LENGTH_LONG).show();
+                user_exists = true;
                 break;
+            }else{
+                Toast.makeText(getActivity() , "user  does not exist" , Toast.LENGTH_LONG).show();
             }
         }
             return user_exists;
