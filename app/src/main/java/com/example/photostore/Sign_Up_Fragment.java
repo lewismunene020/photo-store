@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,7 @@ public class Sign_Up_Fragment extends Fragment {
     public static boolean EMAIL_EXISTS = false;
     private List<UserUpload> storedUserUpload;
     private static String user_exists;
+    private LinearLayout progress_circle_layout;
     private static List<String> users_found = new ArrayList<>();
 
 
@@ -87,6 +89,7 @@ public class Sign_Up_Fragment extends Fragment {
         email_edit_text = view.findViewById(R.id.email_edit_text);
         password_edit_text = view.findViewById(R.id.password_edit_text);
         confirm_password_edit_text = view.findViewById(R.id.confirm_password_edit_text);
+        progress_circle_layout = view.findViewById(R.id.signup_progress_circle_layout);
 
         Button sign_up_btn = view.findViewById(R.id.sign_up_btn);
         Button google_sign_in_btn = view.findViewById(R.id.google_sign_in_btn);
@@ -94,6 +97,7 @@ public class Sign_Up_Fragment extends Fragment {
         Button upload_redirect = view.findViewById(R.id.upload_image_redirect);
         userFirebaseAccess = new UserFirebaseAccess();
         myReceiver = new MyReceiver();
+
 
 //        initializing  stored  users
         storedUserUpload = new ArrayList<>();
@@ -125,21 +129,29 @@ public class Sign_Up_Fragment extends Fragment {
         if(email_is_valid(email)){
             if(validate_password(password , confirm_password)){
                     if(internet_is_connected()) {
-                                String uploadId = databaseReference.push().getKey();
-                                userUpload = new UserUpload(email, password, uploadId);
-        //                    checking the internet connection is active
-                                databaseReference.child(users_storage_path).child(uploadId).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Toast.makeText(getActivity(), "Sign up  successful", Toast.LENGTH_LONG).show();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                                /* IF THE  INTERNET  IS  NOT CONNECTED   THEN   DISPLAY  ERROR  VIEW  AND  TOAST FOR  NO INTERNET  */
+                        //TODO :SHOWING THE LOADER
+                        progress_circle_layout.setVisibility(View.VISIBLE);
+
+                        String uploadId = databaseReference.push().getKey();
+                        userUpload = new UserUpload(email, password, uploadId);
+
+                        //                    checking the internet connection is active
+
+                        databaseReference.child(users_storage_path).child(uploadId).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(getActivity(), "Sign up  successful", Toast.LENGTH_LONG).show();
+                                //TODO :HIDING THE  LOADER
+
+                                progress_circle_layout.setVisibility(View.INVISIBLE);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        /* IF THE  INTERNET  IS  NOT CONNECTED   THEN   DISPLAY  ERROR  VIEW  AND  TOAST FOR  NO INTERNET  */
 
 
                     }else{
@@ -150,8 +162,7 @@ public class Sign_Up_Fragment extends Fragment {
     }
 
     private boolean internet_is_connected() {
-        Intent i;
-        myReceiver.onReceive(getActivity() ,  i = new  Intent());
+        myReceiver.onReceive(getActivity(), new Intent());
         return myReceiver.CONNECTED;
     }
 
@@ -181,7 +192,7 @@ public class Sign_Up_Fragment extends Fragment {
                         //TODO :SHOW AN ALERT TO SHOW USER EXISTS
                         Toast.makeText(getActivity(), "user exists in arraylist ", Toast.LENGTH_LONG).show();
                         user_exists = "true";
-
+                        progress_circle_layout.setVisibility(View.INVISIBLE);
                         // LETS INSERT TO THE DATABASE NOW
 
                     } else {
