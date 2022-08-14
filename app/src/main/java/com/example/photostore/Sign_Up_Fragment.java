@@ -34,19 +34,16 @@ public class Sign_Up_Fragment extends Fragment {
     private EditText email_edit_text;
     private EditText password_edit_text;
     private EditText confirm_password_edit_text;
-    private Button sign_up_btn;
-    private Button google_sign_in_btn;
-    private  EditTextValidator validator =  new EditTextValidator();
-    private  Button upload_redirect;
-    private  UserUpload userUpload;
-    private UserFirebaseAccess  userFirebaseAccess;
-    private String  users_storage_path = "photo_store_android_users";
+    private final EditTextValidator validator = new EditTextValidator();
+    private UserUpload userUpload;
+    private UserFirebaseAccess userFirebaseAccess;
+    private String users_storage_path = "photo_store_android_users";
     private DatabaseReference databaseReference;
     private MyReceiver myReceiver = null;
-    public  static   boolean  EMAIL_EXISTS = false;
+    public static boolean EMAIL_EXISTS = false;
     private List<UserUpload> storedUserUpload;
     private static String user_exists;
-    private  static  List<String> users_found = new ArrayList<>();
+    private static List<String> users_found = new ArrayList<>();
 
 
 
@@ -86,18 +83,20 @@ public class Sign_Up_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View  view  = inflater.inflate(R.layout.fragment_sign__up_, container, false);
+        View view = inflater.inflate(R.layout.fragment_sign__up_, container, false);
         email_edit_text = view.findViewById(R.id.email_edit_text);
         password_edit_text = view.findViewById(R.id.password_edit_text);
         confirm_password_edit_text = view.findViewById(R.id.confirm_password_edit_text);
-        sign_up_btn = view.findViewById(R.id.sign_up_btn);
-        google_sign_in_btn = view.findViewById(R.id.google_sign_in_btn);
-        upload_redirect = view.findViewById(R.id.upload_image_redirect);
+
+        Button sign_up_btn = view.findViewById(R.id.sign_up_btn);
+        Button google_sign_in_btn = view.findViewById(R.id.google_sign_in_btn);
+
+        Button upload_redirect = view.findViewById(R.id.upload_image_redirect);
         userFirebaseAccess = new UserFirebaseAccess();
-        myReceiver =  new MyReceiver();
+        myReceiver = new MyReceiver();
 
 //        initializing  stored  users
-        storedUserUpload  = new ArrayList<>();
+        storedUserUpload = new ArrayList<>();
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         upload_redirect.setOnClickListener(new View.OnClickListener() {
@@ -172,26 +171,24 @@ public class Sign_Up_Fragment extends Fragment {
                         if(currentUserUpload.getEmail().equals(email)){
                             users_found.add(currentUserUpload.getEmail());
                             user_exists = "true";
-//                            Toast.makeText(getActivity(), "user exists",Toast.LENGTH_LONG ).show();
-
-//                        storedUserUpload.add(currentUserUpload);
-//                        Toast.makeText(getActivity() , "user found" , Toast.LENGTH_LONG).show();
                             break;
                         }else{
 
                         }
 
                     }
-                   if(users_found.contains(email)){
-                        Toast.makeText(getActivity(), "user exists in arraylist ",Toast.LENGTH_LONG ).show();
+                    if (users_found.contains(email)) {
+                        //TODO :SHOW AN ALERT TO SHOW USER EXISTS
+                        Toast.makeText(getActivity(), "user exists in arraylist ", Toast.LENGTH_LONG).show();
                         user_exists = "true";
 
                         // LETS INSERT TO THE DATABASE NOW
 
-                    }else{
-                        Toast.makeText(getActivity(), "user exists not in arraylist",Toast.LENGTH_LONG ).show();
+                    } else {
+                        //TODO :INSERT DATA TO  PHONE'S SQLITE DATABASE AND IF THEIR  IS  A  PROFILE IMAGE  DOWNLOAD IT TO THE PHONES STORAGE AND STORE ITS PATH INT  THE SQLITEDB
+                        //TODO :REDIRECT TO THE  HOME PAGE
                         insertUserToDB();
-                        user_exists ="false";
+                        user_exists = "false";
                     }
                     return  null;
                 }
@@ -200,11 +197,12 @@ public class Sign_Up_Fragment extends Fragment {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
+                    //TODO :SHOW "SOMETHING WENT WRONG  ACTIVITY"
 //                Toast.makeText(getActivity() , e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
         }else{
-            // TODO :IF NO INTERNET   LET'S REDIRECT TO  THE NETWORK ERROR  PAGE
+            // TODO :IF NO INTERNET   LET'S REDIRECT TO  THE NETWORK ERROR  PAGE OR SHOW   AN ALERT TO SHOW THAT THERE IS  NO NETWORK
         }
 
     }
