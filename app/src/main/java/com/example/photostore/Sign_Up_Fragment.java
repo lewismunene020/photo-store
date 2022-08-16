@@ -145,7 +145,10 @@ public class Sign_Up_Fragment extends Fragment {
                         databaseReference.child(users_storage_path).child(uploadId).setValue(userUpload).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
+                                redirectToHomePage();
                                 Toast.makeText(getActivity(), "Sign up  successful", Toast.LENGTH_LONG).show();
+                                //TODO  REDIRECTING TO HOME PAGE
+
                                 //TODO :HIDING THE  LOADER
 
                                 progress_circle_layout.setVisibility(View.GONE);
@@ -159,11 +162,17 @@ public class Sign_Up_Fragment extends Fragment {
                         /* IF THE  INTERNET  IS  NOT CONNECTED   THEN   DISPLAY  ERROR  VIEW  AND  TOAST FOR  NO INTERNET  */
 
 
-                    }else{
+                    } else {
 //                        Toast.makeText(getActivity() , "NO  INTERNET  CONNECTION !!!" ,Toast.LENGTH_LONG ).show();
                     }
             }
         }
+    }
+
+    private void redirectToHomePage() {
+
+        Intent i = new Intent(getActivity(), HomeActivity.class);
+        startActivity(i);
     }
 
     private boolean internet_is_connected() {
@@ -172,9 +181,9 @@ public class Sign_Up_Fragment extends Fragment {
     }
 
     private void signUpNewUser() {
-        final String  email  =  email_edit_text.getText().toString().trim();
-        final  String  password = password_edit_text.getText().toString().trim();
-        final  String  confirm_password =   confirm_password_edit_text.getText().toString().trim();
+        final String email = email_edit_text.getText().toString().trim();
+        final String password = password_edit_text.getText().toString().trim();
+        final String confirm_password = confirm_password_edit_text.getText().toString().trim();
 
         if(internet_is_connected()) {
             Task<DataSnapshot> dataSnapshotTask  = FirebaseDatabase.getInstance().getReference(users_storage_path).get();
@@ -198,7 +207,6 @@ public class Sign_Up_Fragment extends Fragment {
                         Toast.makeText(getActivity(), "user exists in arraylist ", Toast.LENGTH_LONG).show();
                         user_exists = "true";
                         progress_circle_layout.setVisibility(View.GONE);
-                        // LETS INSERT TO THE DATABASE NOW
 
                     } else {
                         //TODO :INSERT DATA TO  PHONE'S SQLITE DATABASE AND IF THEIR  IS  A  PROFILE IMAGE  DOWNLOAD IT TO THE PHONES STORAGE AND STORE ITS PATH INT  THE SQLITEDB
@@ -208,7 +216,6 @@ public class Sign_Up_Fragment extends Fragment {
                     }
                     return  null;
                 }
-
 
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -252,7 +259,6 @@ public class Sign_Up_Fragment extends Fragment {
 
         return correct;
     }
-
 
 
 }

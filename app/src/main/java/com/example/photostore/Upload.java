@@ -1,18 +1,29 @@
 package com.example.photostore;
 
 public class Upload {
-    private  String   image_name;
-    private  String  image_url;
+    private String image_name;
+    private String image_url;
 
-    public   Upload(){
+    private String uploadKey;
+
+    public String getUploadKey() {
+        return uploadKey;
+    }
+
+    public void setUploadKey(String uploadKey) {
+        this.uploadKey = uploadKey;
+    }
+
+    public Upload() {
 //        empty   constructor
     }
-    public    Upload(String   name   , String   imageUrl){
-        if(name.trim().equals("")){
-            name  =  "No  Name";
+
+    public Upload(String name, String imageUrl) {
+        if (name.trim().equals("")) {
+            name = "No  Name";
         }
-        image_name =  name;
-        image_url =  imageUrl;
+        image_name = name;
+        image_url = imageUrl;
     }
 
 //    getters   and setters

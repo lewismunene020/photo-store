@@ -20,15 +20,15 @@ public class MainActivity extends AppCompatActivity {
          /*IF THE  USER  IS THE   DB  REDIRECT TO HOME SCREEN
          * ELSE:
          *      REDIRECT  TO USER ACCOUNT  ACTIVITY   */
-        timer  = new Timer();
-        timer.schedule(new  TimerTask(){
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Intent i   =  new Intent(MainActivity.this ,UserAccountActivity.class);
+                Intent i = new Intent(MainActivity.this, UserAccountActivity.class);
                 startActivity(i);
                 finish();
             }
-        }, 1100);
+        }, 500);
 
     }
 
