@@ -13,11 +13,14 @@
         <entry key="app/src/main/res/drawable/ic_google.xml" value="0.165" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.192" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.2075" />
+        <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/ic_photostore_welcome.xml" value="0.1475" />
         <entry key="app/src/main/res/drawable/ic_photostorelogo.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/ic_playstore.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/ic_user_account_button.xml" value="0.165" />
+        <entry key="app/src/main/res/drawable/ic_video_lessons.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/tab_indicator.xml" value="0.165" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.20104166666666667" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_images.xml" value="0.14" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_show_uploads.xml" value="0.25" />
@@ -27,6 +30,7 @@
         <entry key="app/src/main/res/layout/fragment_sign__in_.xml" value="0.20104166666666667" />
         <entry key="app/src/main/res/layout/fragment_sign__up_.xml" value="0.1" />
         <entry key="app/src/main/res/layout/image_item.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.25" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2115" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/image_placeholder.xml" value="0.191" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/placeholder_gif.xml" value="0.197" />

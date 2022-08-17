@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/profileNav"
+        android:title="@string/profile" />
+    <item
+        android:id="@+id/photoEditor"
+        android:icon="@drawable/ic_photo_editor"
+        android:title="@string/photo_editor" />
+    <item
+        android:id="@+id/videoEditor"
+        android:icon="@drawable/ic_video_editor"
+        android:title="@string/video_editor" />
+    <item
+        android:id="@+id/premiumFeatures"
+        android:icon="@drawable/ic_premium"
+        android:title="@string/premium_features">
+        <menu>
+            <item
+                android:id="@+id/videoLessons"
+                android:icon="@drawable/ic_video_lessons"
+                android:title="@string/video_lessons" />
+            <item
+                android:id="@+id/editorWorkspace"
+                android:title="@string/editors_workspaces" />
+        </menu>
+
+    </item>
+    <item
+        android:id="@+id/followUs"
+        android:title="@string/follow_us">
+
+        <menu>
+            <item
+                android:id="@+id/followUsOnFacebook"
+                android:icon="@drawable/ic_facebook"
+                android:title="@string/facebook" />
+            <item
+                android:id="@+id/followUsOnInstagram"
+                android:icon="@drawable/ic_instagram"
+                android:title="@string/instagram" />
+            <item
+                android:id="@+id/followUsOnTwitter"
+                android:icon="@drawable/ic_twitter"
+                android:title="@string/twitter" />
+            <item
+                android:id="@+id/followUsOnRealTalk"
+                android:icon="@drawable/ic_discord"
+                android:title="@string/real_talk" />
+
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/rateApp"
+        android:icon="@drawable/ic_play_store"
+        android:title="@string/rate_app" />
+
+</menu>

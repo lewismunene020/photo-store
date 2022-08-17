@@ -1,5 +1,6 @@
 package com.example.photostore;
 
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -135,6 +138,9 @@ public class UploadActivity extends AppCompatActivity {
                                 public void run() {
                                     mProgressBar.setProgress(0);
                                 }
+                                //TODO  : SET UPLOAD COMPLETE MESSAGE IN THE STATUS BAR
+                                //TODO  : SHOW A  BOTTOM VIEW THAT UPLOAD IS COMPLETE
+                                //TODO  : INTRODUCE A BUTTON THAT REDIRECTS TO SHOW  "SHOW_UPLOADS ACTIVITY" IF USER EXITS A CERTAIN ACTIVITY
                             } , 3000);
 
 
@@ -179,7 +185,32 @@ public class UploadActivity extends AppCompatActivity {
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            int  progress  =  (int)(100.0 * snapshot.getBytesTransferred() /snapshot.getTotalByteCount());
+
+                            //TODO  : SET THE PROGRESSBAR TO APPEAR IN STATUS BAR
+                            //TODO  : SHOW A BOTTOM VIEW THAT SAYS "UPLOADING...." AND DISAPPEARS AFTER A WHILE
+
+                            String text = "Uploading image";
+                            int PHOTO_STORE_CHANNEL_ID = 20002;
+
+                            Intent intent = new Intent(UploadActivity.this, UploadActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(UploadActivity.this,
+                                    0, intent, PendingIntent.FLAG_IMMUTABLE);
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(UploadActivity.this,
+                                    String.valueOf(System.currentTimeMillis())).
+                                    setSmallIcon(R.mipmap.ic_launcher).
+                                    setContentTitle("Photo store upload").
+                                    setContentText(text).
+                                    setPriority(NotificationCompat.PRIORITY_DEFAULT).
+                                    setContentIntent(pendingIntent).
+                                    setAutoCancel(true);
+                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(UploadActivity.this);
+                            notificationManagerCompat.notify(PHOTO_STORE_CHANNEL_ID, builder.build());
+
+
+                            int progress = (int) (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                            //TODO :SHOW THE RATE OF UPLOAD AND THE SIZE OF UPLOAD MADE AT A PARTICULAR INSTANCE
+                            //TODO  :SET TEXT VIEWS THAT SHOW THE RATE OF FILE  UPLOAD ,TOTAL_FILE SIZE AND  CURRENTLY UPLOADED SIZE
                             mProgressBar.setProgress(progress);
                         }
                     });

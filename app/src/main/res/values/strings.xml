@@ -20,4 +20,16 @@
     <string name="sure_to_delete">Are you sure you want to delete ??</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="photo_editor">Photo Editor</string>
+    <string name="video_editor">Video Editor</string>
+    <string name="follow_us">Follow Us</string>
+    <string name="premium_features">Premium Features</string>
+    <string name="video_lessons">Video Lessons</string>
+    <string name="editors_workspaces">Editors\' WorkSpaces</string>
+    <string name="facebook">Facebook</string>
+    <string name="instagram">Instagram</string>
+    <string name="twitter">Twitter</string>
+    <string name="real_talk">RealTalk</string>
+    <string name="rate_app">Rate App</string>
+    <string name="profile">Profile</string>
 </resources>
