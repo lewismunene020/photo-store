@@ -27,9 +27,15 @@
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_upload.xml" value="0.20104166666666667" />
         <entry key="app/src/main/res/layout/activity_user_account.xml" value="0.24538745387453875" />
+        <entry key="app/src/main/res/layout/fragment_editor_workspace.xml" value="0.1734375" />
+        <entry key="app/src/main/res/layout/fragment_photo_editor.xml" value="0.1490036231884058" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1490036231884058" />
         <entry key="app/src/main/res/layout/fragment_sign__in_.xml" value="0.20104166666666667" />
         <entry key="app/src/main/res/layout/fragment_sign__up_.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_video_editor.xml" value="0.10190217391304347" />
+        <entry key="app/src/main/res/layout/fragment_video_lessons.xml" value="0.1490036231884058" />
         <entry key="app/src/main/res/layout/image_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/layout_drawer_nav_header.xml" value="0.33" />
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.25" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2115" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/image_placeholder.xml" value="0.191" />

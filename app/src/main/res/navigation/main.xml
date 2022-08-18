@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    app:startDestination="@id/profile">
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.example.photostore.profileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/photoEditor"
+        android:name="com.example.photostore.photoEditorFragment"
+        android:label="Photo Editor"
+        tools:layout="@layout/fragment_photo_editor" />
+    <fragment
+        android:id="@+id/videoEditor"
+        android:name="com.example.photostore.videoEditorFragment"
+        android:label="Video Editor"
+        tools:layout="@layout/fragment_video_editor" />
+</navigation>

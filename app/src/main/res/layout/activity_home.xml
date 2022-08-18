@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/top_action_bar"
+            android:id="@+id/top_nav_bar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:background="@color/colorPrimaryDark"
@@ -29,6 +29,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/ic_menu"
+                android:layout_marginStart="20dp"
+                android:contentDescription="hamburger menu"
                 app:tint="@color/white" />
 
             <TextView
@@ -45,11 +47,21 @@
 
         </LinearLayout>
 
+        <fragment
+            android:id="@+id/navHostFragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_nav_bar"
+            app:navGraph="@navigation/main" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"
+        app:headerLayout="@layout/layout_drawer_nav_header"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:menu="@menu/navigation_menu">
