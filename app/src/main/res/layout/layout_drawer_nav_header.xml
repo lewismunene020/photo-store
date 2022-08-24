@@ -13,8 +13,8 @@
         android:src="@drawable/beach"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:riv_oval="true" />
-
+        app:riv_oval="true"
+        />
     <View
         android:id="@+id/viewSupporter"
         android:layout_width="1dp"
@@ -22,8 +22,7 @@
         app:layout_constraintBottom_toBottomOf="@id/imageProfile"
         app:layout_constraintEnd_toEndOf="@id/imageProfile"
         app:layout_constraintStart_toStartOf="@id/imageProfile"
-        app:layout_constraintTop_toTopOf="@id/imageProfile" />
-
+        app:layout_constraintTop_toTopOf="@id/imageProfile"/>
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -33,7 +32,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/viewSupporter"
-        app:layout_constraintStart_toEndOf="@id/imageProfile" />
+        app:layout_constraintStart_toEndOf="@id/imageProfile"/>
 
     <TextView
         android:layout_width="0dp"
@@ -42,6 +41,6 @@
         android:text="Verified"
         android:textColor="@color/green"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@id/imageProfile"
-        app:layout_constraintTop_toBottomOf="@id/viewSupporter" />
+         app:layout_constraintStart_toEndOf="@id/imageProfile"
+        app:layout_constraintTop_toBottomOf="@id/viewSupporter"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

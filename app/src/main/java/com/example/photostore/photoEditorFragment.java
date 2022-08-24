@@ -1,15 +1,20 @@
 package com.example.photostore;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
 
 public class photoEditorFragment extends Fragment {
 
+    private static final  int  PICK_IMAGE_REQUEST = 1;
+    private ImageView chooseImage;
+    private ImageView showUploads;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,7 +51,37 @@ public class photoEditorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photo_editor, container, false);
+       View view = inflater.inflate(R.layout.fragment_photo_editor, container, false);
+
+       chooseImage = view.findViewById(R.id.image_picker);
+       showUploads = view.findViewById(R.id.show_uploads);
+
+       chooseImage.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               openFileChooser();
+           }
+       });
+        showUploads.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showUploadsActivity();
+            }
+        });
+        return view;
+    }
+
+    private void  openFileChooser(){
+        Intent intent  =  new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent  ,  PICK_IMAGE_REQUEST); //  Deprecated  method should  be  handled  later
+    }
+
+
+    public   void showUploadsActivity(){
+        Intent i   =    new  Intent(getActivity() , ImagesActivity.class);
+        startActivity(i);
+
     }
 }

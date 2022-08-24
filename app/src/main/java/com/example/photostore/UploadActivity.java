@@ -1,9 +1,13 @@
 package com.example.photostore;
 
-import android.app.PendingIntent;
+import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -191,21 +195,29 @@ public class UploadActivity extends AppCompatActivity {
 
                             String text = "Uploading image";
                             int PHOTO_STORE_CHANNEL_ID = 20002;
+//
+//                            Intent intent = new Intent(UploadActivity.this, UploadActivity.class);
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            PendingIntent pendingIntent = PendingIntent.getActivity(UploadActivity.this,
+//                                    0, intent, PendingIntent.FLAG_IMMUTABLE);
 
-                            Intent intent = new Intent(UploadActivity.this, UploadActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            PendingIntent pendingIntent = PendingIntent.getActivity(UploadActivity.this,
-                                    0, intent, PendingIntent.FLAG_IMMUTABLE);
+                            /* IF  BUILD VERSION IS GREATER THAN  OREO */
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                                NotificationChannel notificationChannel = new NotificationChannel("Photo store upload" ,
+                                        "Photo store upload" , IMPORTANCE_DEFAULT);
+                                NotificationManager manager = getSystemService(NotificationManager.class);
+                                manager.createNotificationChannel(notificationChannel);
+                            }
                             NotificationCompat.Builder builder = new NotificationCompat.Builder(UploadActivity.this,
-                                    String.valueOf(System.currentTimeMillis())).
+                                    "Photo store upload").
                                     setSmallIcon(R.mipmap.ic_launcher).
                                     setContentTitle("Photo store upload").
                                     setContentText(text).
                                     setPriority(NotificationCompat.PRIORITY_DEFAULT).
-                                    setContentIntent(pendingIntent).
+//                                    setContentIntent(pendingIntent).
                                     setAutoCancel(true);
                             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(UploadActivity.this);
-                            notificationManagerCompat.notify(PHOTO_STORE_CHANNEL_ID, builder.build());
+                            notificationManagerCompat.notify(10000, builder.build());
 
 
                             int progress = (int) (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());

@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 //                Intent i = new Intent(MainActivity.this, UserAccountActivity.class);
-                Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                Intent i = new Intent(MainActivity.this, UploadActivity.class);
                 startActivity(i);
                 finish();
             }
