@@ -4,6 +4,7 @@ import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
 
@@ -45,9 +46,10 @@ public class NotificationCreator {
                 setAutoCancel(true);
     }
 
-    public void createAlertNotification(String contentTitle, String contentText) {
+    public void createAlertNotification(String contentTitle, String contentText, PendingIntent pendingIntent) {
         createNotificationChannel();
         NotificationCompat.Builder builder = createInitialNotification(contentTitle, contentText);
+        builder.setContentIntent(pendingIntent);
         buildNotification(builder);
     }
 
@@ -59,7 +61,7 @@ public class NotificationCreator {
 
     public void createUploadNotification(String contentTitle, int progress, String progressString) {
         NotificationCompat.Builder builder = createInitialNotification(contentTitle, progressString);
-        builder.setProgress(100, progress, true);
+        builder.setProgress(100, progress, false);
         buildNotification(builder);
 
     }

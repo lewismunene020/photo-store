@@ -200,7 +200,7 @@ public class UploadActivity extends AppCompatActivity {
                             String notificationString = "Photo store Upload";
                             int PHOTO_STORE_CHANNEL_ID = 20002;
 
-                            Intent intent = new Intent(UploadActivity.this, UploadActivity.class);
+                            Intent intent = new Intent(UploadActivity.this, ShowUploads.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             PendingIntent pendingIntent = PendingIntent.getActivity(UploadActivity.this,
                                     0, intent, PendingIntent.FLAG_IMMUTABLE);
@@ -209,7 +209,7 @@ public class UploadActivity extends AppCompatActivity {
                             notificationCreator.createUploadNotification(notificationString, progress, progressString);
 
                             if (progress == 100) {
-                                notificationCreator.createAlertNotification(notificationString, "upload complete !!");
+                                notificationCreator.createAlertNotification(notificationString, "upload complete !! click to  view ", pendingIntent);
                             }
 
                             /* IF  BUILD VERSION IS GREATER THAN  OREO */
