@@ -4,6 +4,7 @@ import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -189,41 +190,59 @@ public class UploadActivity extends AppCompatActivity {
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-
+                            int progress = (int) (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                            //TODO :SHOW THE RATE OF UPLOAD AND THE SIZE OF UPLOAD MADE AT A PARTICULAR INSTANCE
+                            //TODO  :SET TEXT VIEWS THAT SHOW THE RATE OF FILE  UPLOAD ,TOTAL_FILE SIZE AND  CURRENTLY UPLOADED SIZE
+                            mProgressBar.setProgress(progress);
                             //TODO  : SET THE PROGRESSBAR TO APPEAR IN STATUS BAR
                             //TODO  : SHOW A BOTTOM VIEW THAT SAYS "UPLOADING...." AND DISAPPEARS AFTER A WHILE
 
                             String text = "Uploading image";
                             int PHOTO_STORE_CHANNEL_ID = 20002;
-//
-//                            Intent intent = new Intent(UploadActivity.this, UploadActivity.class);
-//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                            PendingIntent pendingIntent = PendingIntent.getActivity(UploadActivity.this,
-//                                    0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+                            Intent intent = new Intent(UploadActivity.this, UploadActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(UploadActivity.this,
+                                    0, intent, PendingIntent.FLAG_IMMUTABLE);
 
                             /* IF  BUILD VERSION IS GREATER THAN  OREO */
+                            String uploadingNotificationId ="Photo store upload";
+                            int CHANNEL_ID = 10000;
                             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                                NotificationChannel notificationChannel = new NotificationChannel("Photo store upload" ,
+                                NotificationChannel notificationChannel = new NotificationChannel( uploadingNotificationId,
                                         "Photo store upload" , IMPORTANCE_DEFAULT);
                                 NotificationManager manager = getSystemService(NotificationManager.class);
                                 manager.createNotificationChannel(notificationChannel);
                             }
                             NotificationCompat.Builder builder = new NotificationCompat.Builder(UploadActivity.this,
-                                    "Photo store upload").
+                                    uploadingNotificationId).
                                     setSmallIcon(R.mipmap.ic_launcher).
                                     setContentTitle("Photo store upload").
-                                    setContentText(text).
+                                    setContentText(progress+" out  of  100").
+                                    setProgress(100 , (Integer)progress , false).
                                     setPriority(NotificationCompat.PRIORITY_DEFAULT).
 //                                    setContentIntent(pendingIntent).
                                     setAutoCancel(true);
                             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(UploadActivity.this);
-                            notificationManagerCompat.notify(10000, builder.build());
+                            notificationManagerCompat.notify(CHANNEL_ID, builder.build());
+
+                            //If progress  is 100  cancel the notification  and set  the upload complete  notification
+                            if(progress == 100){
+                                notificationManagerCompat.cancel(CHANNEL_ID);
+                                NotificationCompat.Builder builder2 = new NotificationCompat.Builder(UploadActivity.this,
+                                        uploadingNotificationId).
+                                        setSmallIcon(R.mipmap.ic_launcher).
+                                        setContentTitle("Photo store upload").
+                                        setContentText("upload complete").
+                                        setPriority(NotificationCompat.PRIORITY_DEFAULT).
+                                    setContentIntent(pendingIntent).
+                                  setAutoCancel(true);
+                                NotificationManagerCompat notificationManagerCompat2 = NotificationManagerCompat.from(UploadActivity.this);
+                                notificationManagerCompat2.notify(CHANNEL_ID, builder.build());
+
+                            }
 
 
-                            int progress = (int) (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                            //TODO :SHOW THE RATE OF UPLOAD AND THE SIZE OF UPLOAD MADE AT A PARTICULAR INSTANCE
-                            //TODO  :SET TEXT VIEWS THAT SHOW THE RATE OF FILE  UPLOAD ,TOTAL_FILE SIZE AND  CURRENTLY UPLOADED SIZE
-                            mProgressBar.setProgress(progress);
                         }
                     });
 
